@@ -10,7 +10,7 @@ Project 2007 ZS
 -
 Soldier - Bug Fixing / Improvements / Restoration
 
-Pyro-Technician/Tiny Desk Engineer - Contributor (Made zs_dancefloor_v1)
+Tony Dosk Enginooy - Contributor (Made zs_dancefloor_v1) AND Restoration 
 
 Addons
 -
