@@ -6,6 +6,7 @@ include("cl_spawnmenu.lua")
 include("cl_postprocess.lua")
 include("cl_deathnotice.lua")
 include("zs_options.lua")
+include("animations.lua")
 
 NextThump = 0
 NextThumpCalculate = 0

@@ -1,6 +1,7 @@
 include("obj_player_extend.lua")
 include("obj_weapon_extend.lua")
 include("gravitygun.lua")
+include("animations.lua")
 include("zs_options.lua")
 
 GM.Name 	= "Zombie Survival"

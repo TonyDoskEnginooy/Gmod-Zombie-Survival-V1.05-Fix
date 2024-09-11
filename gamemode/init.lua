@@ -29,11 +29,13 @@ AddCSLuaFile("obj_player_extend.lua")
 AddCSLuaFile("obj_weapon_extend.lua")
 
 AddCSLuaFile("zs_options.lua")
+AddCSLuaFile("animations.lua")
 
 AddCSLuaFile("scoreboard/scoreboard.lua")
 
 include("shared.lua")
 include("powerups.lua")
+include("animations.lua")
 
 function gmod.BroadcastLua(lua)
 	for _, pl in pairs(player.GetAll()) do
