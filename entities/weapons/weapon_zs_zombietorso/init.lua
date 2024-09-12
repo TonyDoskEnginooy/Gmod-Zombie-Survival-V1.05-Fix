@@ -12,9 +12,9 @@ SWEP.SwapAnims = false
 function SWEP:Deploy()
 	self.Owner:DrawViewModel(true)
 	self.Owner:DrawWorldModel(false)
-	umsg.Start("RcHCScale", self.Owner)
-		umsg.Entity(self.Owner)
-	umsg.End()
+	net.Start("RcHCScale")
+		net.WriteEntity(self.Owner)
+	net.Send(self.Owner)
 	self.Owner.DeathClass = 1
 end
 

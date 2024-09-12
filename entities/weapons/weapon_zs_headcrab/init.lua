@@ -11,7 +11,7 @@ function SWEP:Deploy()
 	self.Owner:DrawViewModel(false)
 	self.Owner:DrawWorldModel(false)
 	net.Start("RcHCScale")
-		net.WriteEntity(owner)
+		net.WriteEntity(self.Owner)
 	net.Broadcast()
 end
 
