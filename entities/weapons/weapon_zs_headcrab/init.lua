@@ -22,13 +22,13 @@ function SWEP:Think()
 	if not self.Leaping then 
 		if self.Owner:GetVelocity():Length() <= 0 then
 			self.NextWalk = CurTime()
-			if self.NextIdle <= CurTime() and not self.Leaping then 
+			if self.NextIdle <= CurTime() then 
 				self.Owner:DoAnimationEvent(ACT_IDLE)
 				self.NextIdle = CurTime() + 1
 			end
 		else
 			self.NextIdle = CurTime() 
-			if self.NextWalk <= CurTime() and not self.Leaping then 
+			if self.NextWalk <= CurTime() then 
 				self.Owner:DoAnimationEvent(ACT_RUN)
 				self.NextWalk = CurTime() + 1.08
 			end
