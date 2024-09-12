@@ -29,7 +29,7 @@ function SWEP:Think()
 		self.NextWalk = CurTime()
 		if self.NextIdle <= CurTime() then 
 			self.Owner:DoAnimationEvent(ACT_IDLE)
-			self.NextIdle = CurTime() + 3
+			self.NextIdle = CurTime() + 2.9
 		end
 	else
 		self.NextIdle = CurTime()

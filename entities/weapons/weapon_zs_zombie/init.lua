@@ -20,19 +20,17 @@ end
 -- the pre-swing, as long as the distance is low enough.
 
 SWEP.NextWalk = CurTime()
-SWEP.NextIdle = CurTime()
 SWEP.NextFireWalk = CurTime()
 SWEP.NextFireIdle = CurTime()
-local attackDelay = 0.3
+local attackDelay = 0.5
+local yellDelay = 0.1
 
 function SWEP:Think()
-	if CurTime() >= self.NextYell then 
-		if self.Owner:GetVelocity():Length() <= 0 then
-			self.NextWalk = CurTime()
-			if CurTime() >= self.NextSwing + attackDelay and self.NextIdle <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_IDLE)
-				self.NextIdle = CurTime() + 0.9
-			end
+	self.Owner:SetIK(false)
+	if CurTime() >= self.NextYell + yellDelay then 
+		if CurTime() >= self.NextSwing + attackDelay and self.Owner:GetVelocity():Length() <= 0 then
+			self.NextWalk = CurTime() 
+			self.Owner:DoAnimationEvent(ACT_IDLE)
 		else
 			self.NextIdle = CurTime() 
 			if CurTime() >= self.NextSwing + attackDelay and self.NextWalk <= CurTime() then 

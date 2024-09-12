@@ -19,19 +19,23 @@ SWEP.NextWalk = CurTime()
 SWEP.NextIdle = CurTime()
 
 function SWEP:Think()
-	if self.Owner:GetVelocity():Length() <= 0 then
+	if not self.Leaping then 
+		if self.Owner:GetVelocity():Length() <= 0 then
 			self.NextWalk = CurTime()
-			if self.NextIdle <= CurTime() then 
+			if self.NextIdle <= CurTime() and not self.Leaping then 
 				self.Owner:DoAnimationEvent(ACT_IDLE)
 				self.NextIdle = CurTime() + 1
 			end
 		else
 			self.NextIdle = CurTime() 
-			if self.NextWalk <= CurTime() then 
+			if self.NextWalk <= CurTime() and not self.Leaping then 
 				self.Owner:DoAnimationEvent(ACT_RUN)
-				self.NextWalk = CurTime() + 1
+				self.NextWalk = CurTime() + 1.08
 			end
 		end
+	else
+		self.Owner:DoAnimationEvent(ACT_IDLE)
+	end
 	if self.Leaping then
 		if self.Owner:OnGround() then
 			self.Leaping = false
@@ -115,7 +119,6 @@ function SWEP:SecondaryAttack()
 	self.OwnerOffset = Vector(0,0,4)
 	self.Owner:SetGroundEntity(NULL)
 	self.Owner:SetLocalVelocity(vel)
-	self.Owner:DoAnimationEvent(ACT_RANGE_ATTACK1)
 	self.Leaping = true
 	self.Owner:EmitSound("npc/headcrab/attack"..math.random(1,3)..".wav")
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
