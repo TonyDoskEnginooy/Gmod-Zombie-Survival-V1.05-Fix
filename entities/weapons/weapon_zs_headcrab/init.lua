@@ -10,9 +10,9 @@ SWEP.AutoSwitchFrom = false
 function SWEP:Deploy()
 	self.Owner:DrawViewModel(false)
 	self.Owner:DrawWorldModel(false)
-	umsg.Start("RcHCScale")
-		umsg.Entity(self.Owner)
-	umsg.End()
+	net.Start("RcHCScale")
+		net.WriteEntity(owner)
+	net.Broadcast()
 end
 
 SWEP.NextWalk = CurTime()
