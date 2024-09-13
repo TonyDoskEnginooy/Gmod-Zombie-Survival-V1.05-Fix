@@ -219,8 +219,37 @@ function PANEL:Paint()
 
 		draw.RoundedBox(8, wide*0.725, y, xysize, xysize, color_white)
 		draw.SimpleText("Switch to this class", "DefaultSmall", wide*0.75, y + xysize, color_white, TEXT_ALIGN_CENTER)
+	elseif self.Mode == 3 then
+		--draw.SimpleText("Help section coming soon...", "noxnetnormal", wide* 0.5, tall * 0.5, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
+		local x = self:GetWide() * 0.1
+		local tall = self:GetTall()
+		local y = tall * 0.12
+		for _, text in ipairs(HELP_TEXT) do
+			if string.len(text) <= 1 then
+				y = y + tall * 0.02
+			else
+				local pretext = string.sub(text, 1, 2)
+				local colortouse = color_white
+				if pretext == "^r" then
+					colortouse = COLOR_RED
+					text = string.sub(text, 3)
+				elseif pretext == "^g" then
+					colortouse = COLOR_LIMEGREEN
+					text = string.sub(text, 3)
+				elseif pretext == "^y" then
+					colortouse = COLOR_YELLOW
+					text = string.sub(text, 3)
+				elseif pretext == "^b" then
+					colortouse = COLOR_CYAN
+					text = string.sub(text, 3)
+				end
+				draw.SimpleText(text, "DefaultSmall", x, y, colortouse, TEXT_ALIGN_LEFT)
+				y = y + tall * 0.02
+			end
+		end
+		draw.SimpleText("Press TAB (or your scoreboard key) to close this menu.", "Default", self:GetWide() * 0.5, y + self:GetTall()*0.05, COLOR_RED, TEXT_ALIGN_CENTER)
 	else
-		draw.SimpleText(table.ToString(HELP_TEXT, "", true), "noxnetnormal", wide * 0.5, tall * 0.5, Color(255, 0, 0), TEXT_ALIGN_CENTER)
+		draw.SimpleText("Welcome to the hidden tab, lololol.", "noxnetnormal", wide * 0.5, tall * 0.5, Color(255, 0, 0), TEXT_ALIGN_CENTER)
 	end
 end
 
