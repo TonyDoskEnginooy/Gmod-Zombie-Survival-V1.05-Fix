@@ -15,27 +15,7 @@ function SWEP:Deploy()
 	net.Broadcast()
 end
 
-SWEP.NextWalk = CurTime()
-SWEP.NextIdle = CurTime()
-
 function SWEP:Think()
-	if not self.Leaping then 
-		if self.Owner:GetVelocity():Length() <= 0 then
-			self.NextWalk = CurTime()
-			if self.NextIdle <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_IDLE)
-				self.NextIdle = CurTime() + 1
-			end
-		else
-			self.NextIdle = CurTime() 
-			if self.NextWalk <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_RUN)
-				self.NextWalk = CurTime() + 1.08
-			end
-		end
-	else
-		self.Owner:DoAnimationEvent(ACT_IDLE)
-	end
 	if self.Leaping then
 		if self.Owner:OnGround() then
 			self.Leaping = false
@@ -106,6 +86,7 @@ end
 SWEP.NextLeap = 0
 function SWEP:SecondaryAttack()
 	if self.Leaping then return end
+	self.Owner:Fire("IgnoreFallDamage", "", 0)
 	local onground = self.Owner:OnGround()
 	if CurTime() < self.NextLeap then return end
 	if not onground then return end

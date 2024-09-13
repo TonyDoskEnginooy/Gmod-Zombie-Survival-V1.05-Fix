@@ -16,25 +16,7 @@ function SWEP:Deploy()
 	self.Owner:DrawWorldModel(false)
 end
 
-SWEP.NextWalk = CurTime()
-SWEP.NextIdle = CurTime()
-local attackAdvance = 0.6
-local yellAdvance = 1.5
-
 function SWEP:Think()
-	if self.Owner:GetVelocity():Length() <= 0 then
-		self.NextWalk = CurTime()
-		if self.NextIdle <= CurTime() and CurTime() >= self.NextYell - yellAdvance and CurTime() >= self.NextSwing - attackAdvance then 
-			self.Owner:DoAnimationEvent(ACT_IDLE)
-			self.NextIdle = CurTime() + 2.9
-		end
-	else
-		self.NextIdle = CurTime()
-		if CurTime() >= self.NextSwing - attackAdvance and CurTime() >= self.NextYell - yellAdvance and self.NextWalk <= CurTime() then 
-			self.Owner:DoAnimationEvent(ACT_WALK)
-			self.NextWalk = CurTime() + 0.98
-		end
-	end
 	if not self.NextHit then return end
 	if CurTime() < self.NextHit then return end
 	self.NextHit = nil
@@ -111,7 +93,6 @@ SWEP.NextSwing = 0
 function SWEP:PrimaryAttack()
 	if CurTime() < self.NextSwing then return end
 	if self.SwapAnims then self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER) else self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK) end
-	self.Owner:DoAnimationEvent(ACT_MELEE_ATTACK1)
 	self.SwapAnims = not self.SwapAnims
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self.Owner:EmitSound("npc/zombie_poison/pz_warn"..math.random(1, 2)..".wav")
@@ -132,10 +113,10 @@ function SWEP:SecondaryAttack()
 		self.NextYell = CurTime() + 2
 		return
 	end
+	self.Owner:DoAnimationEvent(ACT_RANGE_ATTACK1)
 	self.Owner:SetAnimation(PLAYER_SUPERJUMP)
 	self.Owner:EmitSound("npc/zombie_poison/pz_throw"..math.random(2,3)..".wav")
 	GAMEMODE:SetPlayerSpeed(self.Owner, 1)
-	self.Owner:DoAnimationEvent(ACT_RANGE_ATTACK2)
 	self.NextYell = CurTime() + 4
 	timer.Simple(1, function()
 		if IsValid(self) and IsValid(self.Owner) then

@@ -14,18 +14,7 @@ function SWEP:Deploy()
 	self.Owner:DrawWorldModel(false)
 end
 
-SWEP.NextWalk = CurTime()
-SWEP.NextIdle = CurTime()
-
 function SWEP:Think()
-	if self.Owner:GetVelocity():Length() <= 50 then
-		self.NextWalk = CurTime()
-	else
-		if CurTime() >= self.NextSwing and self.NextWalk <= CurTime() then 
-			self.Owner:DoAnimationEvent(ACT_RUN)
-			self.NextWalk = CurTime() + 0.45
-		end
-	end
 	if self.Leaping then
 		if self.Owner:OnGround() then
 			self.Leaping = false
@@ -142,7 +131,6 @@ function SWEP:Think()
 	if self.SwapAnims then self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER) else self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK) end
 	self.SwapAnims = not self.SwapAnims
 	self.NextSwing = CurTime() + self.Primary.Delay
-	self.Owner:DoAnimationEvent(ACT_MELEE_ATTACK1)
 end
 
 SWEP.NextSwing = 0

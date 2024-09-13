@@ -10,49 +10,21 @@ SWEP.AutoSwitchFrom = false
 -- This is to get around that dumb thing where the view anims don't play right.
 SWEP.SwapAnims = false
 
+function SWEP:SetNextYell(time)
+	self:SetDTFloat(0, time)
+end
+
 function SWEP:Deploy()
 	self.Owner:DrawViewModel(true)
 	self.Owner:DrawWorldModel(false)
+	self:SetNextYell(0)
 end
 
 -- This is kind of unique. It does a trace on the pre swing to see if it hits anything
 -- and then if the after-swing doesn't hit anything, it hits whatever it hit in
 -- the pre-swing, as long as the distance is low enough.
 
-SWEP.NextWalk = CurTime()
-SWEP.NextFireWalk = CurTime()
-SWEP.NextFireIdle = CurTime()
-local attackDelay = 0.5
-local yellDelay = 0.1
-
 function SWEP:Think()
-	self.Owner:SetIK(false)
-	if CurTime() >= self.NextYell + yellDelay then 
-		if CurTime() >= self.NextSwing + attackDelay and self.Owner:GetVelocity():Length() <= 0 then
-			self.NextWalk = CurTime() 
-			self.Owner:DoAnimationEvent(ACT_IDLE)
-		else
-			self.NextIdle = CurTime() 
-			if CurTime() >= self.NextSwing + attackDelay and self.NextWalk <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_WALK)
-				self.NextWalk = CurTime() + 1.9
-			end
-		end
-	else
-		if self.Owner:GetVelocity():Length() <= 0 then
-			self.NextFireWalk = CurTime()
-			if CurTime() >= self.NextSwing + attackDelay and self.NextFireIdle <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_IDLE_ON_FIRE)
-				self.NextFireIdle = CurTime() + 0.98
-			end
-		else
-			self.NextFireIdle = CurTime()
-			if CurTime() >= self.NextSwing + attackDelay and self.NextFireWalk <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_WALK_ON_FIRE)
-				self.NextFireWalk = CurTime() + 0.98
-			end
-		end
-	end
 	if not self.NextHit then return end
 	if CurTime() < self.NextHit then return end
 	self.NextHit = nil
@@ -125,7 +97,6 @@ SWEP.NextSwing = 0
 function SWEP:PrimaryAttack()
 	if CurTime() < self.NextSwing then return end
 	if self.SwapAnims then self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER) else self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK) end
-	self.Owner:DoAnimationEvent(ACT_MELEE_ATTACK1)
 	self.SwapAnims = not self.SwapAnims
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self.Owner:EmitSound("npc/zombie/zo_attack"..math.random(1, 2)..".wav")
@@ -137,13 +108,12 @@ function SWEP:PrimaryAttack()
 	end
 end
 
-SWEP.NextYell = 0
 function SWEP:SecondaryAttack()
-	if CurTime() < self.NextYell then return end
+	if CurTime() < self:GetNextYell() then return end
 	self.Owner:SetAnimation(PLAYER_SUPERJUMP)
 
 	self.Owner:EmitSound("npc/zombie/zombie_voice_idle"..math.random(1, 14)..".wav")
-	self.NextYell = CurTime() + 2
+	self:SetNextYell(CurTime() + self.YellTime)
 end
 
 function SWEP:Reload()

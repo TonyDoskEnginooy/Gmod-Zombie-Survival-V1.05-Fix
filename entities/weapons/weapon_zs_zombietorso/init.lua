@@ -18,24 +18,7 @@ function SWEP:Deploy()
 	self.Owner.DeathClass = 1
 end
 
-SWEP.NextWalk = CurTime()
-SWEP.NextIdle = CurTime()
-local attackAdvance = 0.6
-
 function SWEP:Think()
-	if self.Owner:GetVelocity():Length() <= 0 then
-			self.NextWalk = CurTime()
-			if CurTime() >= self.NextSwing - attackAdvance and self.NextIdle <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_IDLE)
-				self.NextIdle = CurTime() + 10
-			end
-		else
-			self.NextIdle = CurTime() 
-			if CurTime() >= self.NextSwing - attackAdvance and self.NextWalk <= CurTime() then 
-				self.Owner:DoAnimationEvent(ACT_WALK)
-				self.NextWalk = CurTime() + 1.18
-			end
-		end
 	if not self.NextHit then return end
 	if CurTime() < self.NextHit then return end
 	self.NextHit = nil
@@ -108,7 +91,6 @@ SWEP.NextSwing = 0
 function SWEP:PrimaryAttack()
 	if CurTime() < self.NextSwing then return end
 	if self.SwapAnims then self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER) else self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK) end
-	self.Owner:DoAnimationEvent(ACT_MELEE_ATTACK1)
 	self.SwapAnims = not self.SwapAnims
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self.Owner:EmitSound("npc/zombie/zo_attack"..math.random(1, 2)..".wav")

@@ -21,25 +21,6 @@ function SWEP:Deploy()
 	util.Effect("chemzombieambient", effectdata)
 end
 
-SWEP.NextWalk = CurTime()
-SWEP.NextIdle = CurTime()
-
-function SWEP:Think()
-	if self.Owner:GetVelocity():Length() <= 0 then
-		self.NextWalk = CurTime()
-		if self.NextIdle <= CurTime() then 
-			self.Owner:DoAnimationEvent(ACT_IDLE)
-			self.NextIdle = CurTime() + 2.9
-		end
-	else
-		self.NextIdle = CurTime()
-		if self.NextWalk <= CurTime() then 
-			self.Owner:DoAnimationEvent(ACT_WALK)
-			self.NextWalk = CurTime() + 0.98
-		end
-	end
-end
-
 function SWEP:PrimaryAttack()
 end
 
