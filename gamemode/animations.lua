@@ -1,44 +1,68 @@
-function GM:CalcMainActivity(ply, velocity)
-	local plyTab = ply:GetTable()
+AddCSLuaFile("zs_options.lua")
+AddCSLuaFile("init.lua")
+include("zs_options.lua")
+
+local ActCalcs = {}
+local UpdateAnims = {}
+local AnimEvents = {}
+
+for classnum, ZombieClass in ipairs(ZombieClasses) do
+	CLASS = {}
+	include("classiczombieanims/" .. ZombieClass["ANIMATE"] .. ".lua")
+	ActCalcs[classnum] = CLASS.CalcMainActivity
+	UpdateAnims[classnum] = CLASS.UpdateAnimation
+	AnimEvents[classnum] = CLASS.DoAnimationEvent
+	CLASS = nil
+end
+
+function GM:CalcMainActivity(pl, velocity)
+	local plTab = pl:GetTable()
+
+	if pl:Team() == TEAM_UNDEAD and pl.Class and ActCalcs[pl.Class] then
+		local ideal, override = ActCalcs[pl.Class](pl, velocity)
+		if ideal then
+			return ideal, override
+		end
+	end
 
 	-- Handle landing
-	local onground = ply:OnGround()
-	if onground and not plyTab.m_bWasOnGround then
-		ply:AnimRestartGesture(GESTURE_SLOT_JUMP, ACT_LAND, true)
-		plyTab.m_bWasOnGround = true
+	local onground = pl:OnGround()
+	if onground and not plTab.m_bWasOnGround then
+		pl:AnimRestartGesture(GESTURE_SLOT_JUMP, ACT_LAND, true)
+		plTab.m_bWasOnGround = true
 	end
 	--
 
 	-- Handle jumping
 	-- airwalk more like hl2mp, we airwalk until we have 0 velocity, then it's the jump animation
 	-- underwater we're alright we airwalking
-	local waterlevel = ply:WaterLevel()
-	if plyTab.m_bJumping then
-		if plyTab.m_bFirstJumpFrame then
-			plyTab.m_bFirstJumpFrame = false
-			ply:AnimRestartMainSequence()
+	local waterlevel = pl:WaterLevel()
+	if plTab.m_bJumping then
+		if plTab.m_bFirstJumpFrame then
+			plTab.m_bFirstJumpFrame = false
+			pl:AnimRestartMainSequence()
 		end
 
-		if waterlevel >= 2 or CurTime() - plyTab.m_flJumpStartTime > 0.2 and onground then
-			plyTab.m_bJumping = false
-			plyTab.m_fGroundTime = nil
-			ply:AnimRestartMainSequence()
+		if waterlevel >= 2 or CurTime() - plTab.m_flJumpStartTime > 0.2 and onground then
+			plTab.m_bJumping = false
+			plTab.m_fGroundTime = nil
+			pl:AnimRestartMainSequence()
 		else
 			return ACT_MP_JUMP, -1
 		end
 	elseif not onground and waterlevel <= 0 then
-		if not plyTab.m_fGroundTime then
-			plyTab.m_fGroundTime = CurTime()
-		elseif CurTime() > plyTab.m_fGroundTime and velocity:Length2D() < 0.5 then
-			plyTab.m_bJumping = true
-			plyTab.m_bFirstJumpFrame = false
-			plyTab.m_flJumpStartTime = 0
+		if not plTab.m_fGroundTime then
+			plTab.m_fGroundTime = CurTime()
+		elseif CurTime() > plTab.m_fGroundTime and velocity:Length2D() < 0.5 then
+			plTab.m_bJumping = true
+			plTab.m_bFirstJumpFrame = false
+			plTab.m_flJumpStartTime = 0
 		end
 	end
 	--
 
 	-- Handle ducking
-	if ply:Crouching() then
+	if pl:Crouching() then
 		if velocity:Length2DSqr() >= 1 then
 			return ACT_MP_CROUCHWALK, -1
 		end
@@ -65,7 +89,13 @@ function GM:CalcMainActivity(ply, velocity)
 	return ACT_MP_STAND_IDLE, -1
 end
 
-function GM:UpdateAnimation(ply, velocity, maxseqgroundspeed)
+function GM:UpdateAnimation(pl, velocity, maxseqgroundspeed)
+	if pl:Team() == TEAM_UNDEAD and pl.Class and UpdateAnims[pl.Class] then
+		if UpdateAnims[pl.Class](pl, velocity, maxseqgroundspeed) then
+			return
+		end
+	end
+
 	local len = velocity:LengthSqr()
 	local rate
 
@@ -76,22 +106,29 @@ function GM:UpdateAnimation(ply, velocity, maxseqgroundspeed)
 	end
 
 	-- if we're under water we want to constantly be swimming..
-	if ply:WaterLevel() >= 2 then
+	if pl:WaterLevel() >= 2 then
 		rate = math.max(rate, 0.5)
 	end
 
-	ply:SetPlaybackRate(rate)
+	pl:SetPlaybackRate(rate)
 
 	if CLIENT then
-		GAMEMODE:GrabEarAnimation(ply)
+		GAMEMODE:GrabEarAnimation(pl)
 		--GAMEMODE:MouthMoveAnimation(pl) -- Broken?
 	end
 end
 
-function GM:DoAnimationEvent(ply, event, data)
-	if event == PLAYERANIMEVENT_FLINCH_HEAD then
-		return ply:DoFlinchAnim(data)
+function GM:DoAnimationEvent(pl, event, data)
+	if pl:Team() == TEAM_UNDEAD and pl.Class and AnimEvents[pl.Class] then
+		local eact = AnimEvents[pl.Class](pl, event, data)
+		if eact then
+			return eact
+		end
 	end
 
-	return self.BaseClass:DoAnimationEvent(ply, event, data)
+	if event == PLAYERANIMEVENT_FLINCH_HEAD then
+		return pl:DoFlinchAnim(data)
+	end
+
+	return self.BaseClass:DoAnimationEvent(pl, event, data)
 end

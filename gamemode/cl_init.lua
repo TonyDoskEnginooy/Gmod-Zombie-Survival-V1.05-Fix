@@ -6,7 +6,6 @@ include("cl_spawnmenu.lua")
 include("cl_postprocess.lua")
 include("cl_deathnotice.lua")
 include("zs_options.lua")
-include("animations.lua")
 
 NextThump = 0
 NextThumpCalculate = 0
@@ -274,6 +273,9 @@ function GM:Initialize()
 		additive = false,
 		outline = false,
 	})
+
+	RunConsoleCommand("sv_sticktoground", 0)
+	RunConsoleCommand("mp_falldamage", 1)
 
 	if FORCE_NORMAL_GAMMA then -- Let's make people actually use flashlights.
 		RunConsoleCommand("mat_monitorgamma", 2.2)

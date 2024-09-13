@@ -28,14 +28,21 @@ AddCSLuaFile("gravitygun.lua")
 AddCSLuaFile("obj_player_extend.lua")
 AddCSLuaFile("obj_weapon_extend.lua")
 
-AddCSLuaFile("zs_options.lua")
+do
+	local files, directories = file.Find("gamemodes/nvts-gmod13-zombiesurvival_v1.05/gamemode/classiczombieanims/*.lua", "GAME")
+
+	for k, _file in ipairs(files) do
+		AddCSLuaFile("classiczombieanims/" .. _file)
+	end
+end
 AddCSLuaFile("animations.lua")
+
+AddCSLuaFile("zs_options.lua")
 
 AddCSLuaFile("scoreboard/scoreboard.lua")
 
 include("shared.lua")
 include("powerups.lua")
-include("animations.lua")
 
 function gmod.BroadcastLua(lua)
 	for _, pl in pairs(player.GetAll()) do

@@ -3,12 +3,15 @@ if not meta then return end
 
 function meta:GetZombieClass()
 	return self.Class or 1
-	--return self:GetNetworkedInt("Class", 1)
 end
 
 function meta:SetZombieClass(cl)
 	self.Class = cl
-	--self:SetNetworkedInt("Class", cl)
+	local index = self:EntIndex()
+
+	timer.Simple(1, function()
+		BroadcastLua("ents.GetByIndex(" .. index .. ").Class="..cl)
+	end)
 end
 
 function meta:TraceLine(distance)
@@ -197,6 +200,47 @@ function meta:PlayPainSound()
 			else
 				self:EmitSound(MalePainSoundsHeavy[math.random(1, #MalePainSoundsHeavy)])
 			end
+		end
+	end
+end
+
+local FlinchSequences = {
+	"flinch_01",
+	"flinch_02",
+	"flinch_back_01",
+	"flinch_head_01",
+	"flinch_head_02",
+	"flinch_phys_01",
+	"flinch_phys_02",
+	"flinch_shoulder_l",
+	"flinch_shoulder_r",
+	"flinch_stomach_01",
+	"flinch_stomach_02",
+}
+function meta:DoFlinchAnim(data)
+	local seq = FlinchSequences[data] or FlinchSequences[1]
+	if seq then
+		local seqid = self:LookupSequence(seq)
+		if seqid > 0 then
+			self:AddVCDSequenceToGestureSlot(GESTURE_SLOT_FLINCH, seqid, 0, true)
+		end
+	end
+end
+
+local ZombieAttackSequences = {
+	"zombie_attack_01",
+	"zombie_attack_02",
+	"zombie_attack_03",
+	"zombie_attack_04",
+	"zombie_attack_05",
+	"zombie_attack_06"
+}
+function meta:DoZombieAttackAnim(data)
+	local seq = ZombieAttackSequences[data] or ZombieAttackSequences[1]
+	if seq then
+		local seqid = self:LookupSequence(seq)
+		if seqid > 0 then
+			self:AddVCDSequenceToGestureSlot(GESTURE_SLOT_ATTACK_AND_RELOAD, seqid, 0, true)
 		end
 	end
 end

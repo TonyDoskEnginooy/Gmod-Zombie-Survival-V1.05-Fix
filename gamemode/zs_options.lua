@@ -155,15 +155,16 @@ HELP_TEXT = [[^rWelcome to Zombie Survival, for GMod10.@ @^b          -- HUMANS 
 @If you lose enough health, your vision will enhance due to adrenaline.@ 
 @^rRewards for killing zombies:@]]
 ..weapon_table_text..
-[[ @ @^g          -- ZOMBIES --@You can change your class as a zombie by going in the scoreboard and pressing the "classes" tab.
+[[ @ @^g          -- ZOMBIES --
+@You can change your class as a zombie by going in the scoreboard and pressing the "classes" tab.
 @Classes in red mean that more humans need to be killed to get that class unlocked.@ 
 @^rYou lose the match if all humans die or you're a zombie at the end of the round.@ 
 @^yVisit www.noxiousnet.com or forums.facepunchstudios.com for updates to the game!]]
 
 HELP_TEXT = string.Explode("@", HELP_TEXT)
-for _, text in pairs(HELP_TEXT) do
-	text = string.gsub(text, "@", "")
-end
+	for _, text in pairs(HELP_TEXT) do
+		text = string.gsub(text, "@", "")
+	end
 end
 
 ----------------------------
@@ -178,6 +179,7 @@ ZombieClasses[1] =						-- The number should not be the same as any other class.
 	Health = 150,						-- Obviously enough, health
 	Threshold = 0.0,					-- Infliction <a number between 0.0 and 1.0, 0 being anytime and 1 being when there's 100% zombies> needed in order to change to this class.
 	SWEP = "weapon_zs_zombie",			-- The weapon file to use.
+	ANIMATE = "classiczombie",
 	Model = Model("models/Zombie/Classic.mdl"),	-- The world model to use. If you make your own class, you must set up it's own ANIMATEations or use the default HL2MP ones.
 	Speed=130,							-- Speed moving on the ground.
 	Description="The slow, sulking bag of flesh. This is your basic zombie.@Unique abilitys: Can claw at objects to send them flying.", -- Description to display at class selection. Seperate lines by the @ character.
@@ -205,6 +207,7 @@ ZombieClasses[2] =
 	Health = 80,
 	Threshold = 0.5,
 	SWEP = "weapon_zs_fastzombie",
+	ANIMATE = "classicfastzombie",
 	Model = Model("models/Zombie/Fast.mdl"),
 	Speed = 225,
 	Description = "The faster, more decomposed, boney zombie. This is your fast attack zombie@Unique abilitys: Can climb walls and leep good distances.",
@@ -225,6 +228,7 @@ ZombieClasses[3] =
 	Health = 280,
 	Threshold = 0.65,
 	SWEP = "weapon_zs_poisonzombie",
+	ANIMATE = "classicpoisonzombie",
 	Model = Model("models/Zombie/Poison.mdl"),
 	Speed = 115,
 	Description="A giant mass of decaying flesh.@Unique abilitys: Massive melee damage and can throw headcrabs.",
@@ -247,6 +251,7 @@ ZombieClasses[4] =
 	Health = 25,
 	Threshold = 0.75,
 	SWEP = "weapon_zs_chemzombie",
+	ANIMATE = "classicchemzombie",
 	Model = Model("models/Zombie/Poison.mdl"),
 	Speed = 135,
 	Description="Mutated zombie full of volatile chemicals.@Unique abilitys: explodes when killed.",
@@ -270,6 +275,7 @@ ZombieClasses[5] =
 	Health = 15,
 	Threshold = 0.26,
 	SWEP = "weapon_zs_headcrab",
+	ANIMATE = "classicheadcrab",
 	Model = Model("models/headcrabclassic.mdl"),
 	Speed = 140,
 	Description="A headcrab.@Unique abilitys: humps heads.",
@@ -290,6 +296,7 @@ ZombieClasses[6] =
 	Health=30,
 	Threshold=0,
 	SWEP="weapon_zs_zombietorso",
+	ANIMATE = "classiczombietorso",
 	Model=Model("models/Zombie/Classic_torso.mdl"),
 	Speed=100,
 	Description="You shouldn't even be seeing this.",
