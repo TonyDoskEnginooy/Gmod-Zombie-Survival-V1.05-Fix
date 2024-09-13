@@ -113,7 +113,7 @@ function SWEP:SecondaryAttack()
 		self.NextYell = CurTime() + 2
 		return
 	end
-	self.Owner:DoAnimationEvent(ACT_RANGE_ATTACK1)
+	self.Owner:DoAnimationEvent(ACT_RANGE_ATTACK2)
 	self.Owner:SetAnimation(PLAYER_SUPERJUMP)
 	self.Owner:EmitSound("npc/zombie_poison/pz_throw"..math.random(2,3)..".wav")
 	GAMEMODE:SetPlayerSpeed(self.Owner, 1)
