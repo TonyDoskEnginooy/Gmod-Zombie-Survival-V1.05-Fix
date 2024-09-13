@@ -12,14 +12,10 @@ end
 Rewards = {} -- Leave this.
 Rewards[5] = {"weapon_zs_deagle", "weapon_zs_glock3"}
 Rewards[10] = {"_Heal", "_Heal", "_Shell"}
-Rewards[15] = {"weapon_zs_uzi", "weapon_zs_smg"}
-Rewards[20] = {"weapon_zs_barricadekit", "weapon_zs_grenade"}
+Rewards[15] = {"weapon_zs_uzi"}
 Rewards[28] = {"weapon_zs_sweepershotgun", "weapon_zs_slugrifle"}
 Rewards[60] = {"_Regeneration", "_Heal"}
-Rewards[75] = {"weapon_zs_boomstick", "weapon_slam"}
-Rewards[100] = {"weapon_zs_ak47"}
-Rewards[125] = {"weapon_physcannon"}
-Rewards[155] = {"weapon_rpg"}
+Rewards[75] = {"weapon_slam"}
 
 --------------------------------------
 -- AMMO REGENERATION --
@@ -143,7 +139,9 @@ end
 -- Don't put @'s right next to eachother.
 -- Use ^r ^g ^b ^y  when the line starts to change color of the line
 
-HELP_TEXT = [[^rWelcome to Zombie Survival, for GMod10.@ @^b          -- HUMANS --@^bSurvive for ]]
+HELP_TEXT = [[^rWelcome to Zombie Survival, for GMod10.@ 
+@^b          -- HUMANS --
+@^bSurvive for ]]
 ..ToMinutesSeconds(ROUNDTIME)..
 [[ to win the match.@If you get killed by a zombie, you become one! ]]
 ..shit..
