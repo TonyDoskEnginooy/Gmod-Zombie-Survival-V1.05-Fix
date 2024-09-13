@@ -31,7 +31,7 @@ function CLASS.UpdateAnimation(pl, velocity, maxseqgroundspeed)
 
 	local len2d = velocity:Length2D()
 	if len2d > 1 then
-		ply:SetPlaybackRate( math.min(len2d / 100, 1.5) )
+		pl:SetPlaybackRate( math.min(len2d / 100, 1.5) )
 	else
 		pl:SetPlaybackRate(1)
 	end
