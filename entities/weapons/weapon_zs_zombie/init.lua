@@ -56,7 +56,7 @@ function SWEP:Think()
 				ent:SetVelocity(vel)
 			end
 		elseif ent:GetClass() == "func_breakable" then
-			ent:Fire("addhealth", "-32", 0) // I had to add this because bullets would go through glass and then hit players on the other side, even if they were a mile away.
+			ent:Fire("addhealth", "-32", 0) -- I had to add this because bullets would go through glass and then hit players on the other side, even if they were a mile away.
 		elseif phys:IsValid() and not ent:IsNPC() and phys:IsMoveable() then
 			local vel = self.Owner:EyeAngles():Forward() * 35000
 			if vel.z < 1800 then vel.z = 1800 end

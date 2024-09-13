@@ -31,7 +31,7 @@ function SWEP:Think()
 	end
 	if ent and ent:IsValid() then
 		self.Owner:EmitSound("npc/zombie/claw_strike"..math.random(1, 3)..".wav", 100, 80)
-		// util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
+		--util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
 		local phys = ent:GetPhysicsObject()
 		if ent:IsPlayer() then
 		    if ent:Team() ~= TEAM_UNDEAD then
@@ -82,11 +82,11 @@ function SWEP:Think()
 		end
  	elseif trace.HitWorld then
 		self.Owner:EmitSound("npc/zombie/claw_strike"..math.random(1, 3)..".wav", 100, 80)
-		// util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
+		--util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
 	end
 	self.Owner:EmitSound("npc/zombie/claw_miss"..math.random(1, 2)..".wav", 100, 80)
 	self.PreHit = nil
-	//GAMEMODE:SetPlayerSpeed(self.Owner, ZombieClasses[self.Owner:GetZombieClass()].Speed)
+	--GAMEMODE:SetPlayerSpeed(self.Owner, ZombieClasses[self.Owner:GetZombieClass()].Speed)
 end
 
 SWEP.NextSwing = 0
@@ -102,7 +102,7 @@ function SWEP:PrimaryAttack()
 	if trace.HitNonWorld then
 		self.PreHit = trace.Entity
 	end
-	//GAMEMODE:SetPlayerSpeed(self.Owner, ZombieClasses[self.Owner:GetZombieClass()].Speed * 0.6)
+	--GAMEMODE:SetPlayerSpeed(self.Owner, ZombieClasses[self.Owner:GetZombieClass()].Speed * 0.6)
 end
 
 SWEP.NextYell = 0

@@ -31,7 +31,7 @@ function SWEP:Think()
 				ent = trace.Entity
 			end
 			if ent and ent:IsValid() then
-		    	util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
+		    	--util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
 				local phys = ent:GetPhysicsObject()
 				if ent:IsPlayer() then
 					local vel = self.Owner:EyeAngles():Forward() * 650
@@ -50,7 +50,7 @@ function SWEP:Think()
 				self.Owner:ViewPunch(Angle(math.random(0, 70), math.random(0, 70), math.random(0, 70)))
 			elseif trace.HitWorld then
 				self.Owner:EmitSound("physics/flesh/flesh_strider_impact_bullet1.wav")
-		    	util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
+		    	--util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
 		    	self.Leaping = false
 		    	self.NextLeap = CurTime() + 1.5
 			end
@@ -70,7 +70,7 @@ function SWEP:Think()
 		ent = trace.Entity
 	end
 	if ent and ent:IsValid() then
-		util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
+		--util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
 		local phys = ent:GetPhysicsObject()
 		if ent:IsPlayer() then
 		    if ent:Team() ~= TEAM_UNDEAD then
@@ -123,7 +123,7 @@ function SWEP:Think()
 		self.Owner:EmitSound("npc/zombie/claw_strike"..math.random(1, 3)..".wav", 99, math.random(105, 145))
  	elseif trace.HitWorld then
 		self.Owner:EmitSound("npc/zombie/claw_strike"..math.random(1, 3)..".wav", 99, math.random(105, 145))
-		util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
+		--util.Decal("Blood", trace.HitPos + trace.HitNormal*10, trace.HitPos - trace.HitNormal*10)
 	else
 		self.Owner:EmitSound("npc/zombie/claw_miss"..math.random(1, 2)..".wav", 99, math.random(105, 145))
 	end
