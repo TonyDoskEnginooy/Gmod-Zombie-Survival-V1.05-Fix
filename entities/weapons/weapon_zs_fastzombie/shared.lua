@@ -21,6 +21,10 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = true
 SWEP.Secondary.Ammo	= "none"
 
+function SWEP:GetClimbing()
+	return self:GetDTBool(0)
+end
+
 function SWEP:Reload()
 	return false
 end

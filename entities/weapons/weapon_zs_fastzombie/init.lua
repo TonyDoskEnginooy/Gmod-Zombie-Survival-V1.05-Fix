@@ -9,12 +9,21 @@ SWEP.AutoSwitchFrom = false
 
 SWEP.SwapAnims = false
 
+function SWEP:SetClimbing(climbing)
+	self:SetDTBool(0, climbing)
+end
+
 function SWEP:Deploy()
 	self.Owner:DrawViewModel(true)
 	self.Owner:DrawWorldModel(false)
 end
 
 function SWEP:Think()
+
+	if self:GetClimbing() and CurTime() >= self.NextClimb then
+		self:SetClimbing(false)
+	end
+
 	if self.Leaping then
 		if self.Owner:OnGround() then
 			self.Leaping = false
@@ -161,6 +170,7 @@ function SWEP:SecondaryAttack()
 			self.Owner:SetLocalVelocity(Vector(0,0,150))
 			self.Owner:SetAnimation(PLAYER_SUPERJUMP)
 			self.NextClimb = CurTime() + self.Secondary.Delay
+			self:SetClimbing(true)
 			self.Owner:EmitSound("player/footsteps/metalgrate"..math.random(1,4)..".wav")
 			self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
 			return
