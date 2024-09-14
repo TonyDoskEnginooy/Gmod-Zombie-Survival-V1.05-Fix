@@ -176,7 +176,7 @@ function GM:InitPostEntity()
 
 	local mapname = game.GetMap()
 	-- Terrorist spawns are usually in some kind of house or a main base in CS_  in order to guard the hosties. Put the humans there.
-	if string.find(mapname, "cs_") or string.find(mapname, "zs_") then
+	if string.find(mapname, "cs_") or string.find(mapname, "zs_") or string.find(mapname, "rp_") then
 		self.UndeadSpawnPoints = table.Add(self.UndeadSpawnPoints, ents.FindByClass("info_player_counterterrorist"))
 		self.HumanSpawnPoints = table.Add( self.HumanSpawnPoints, ents.FindByClass("info_player_terrorist"))
 	else -- Otherwise, this is probably a DE_, ZM_, or ZH_ map. In DE_ maps, the T's spawn away from the main part of the map and are zombies in zombie plugins so let's do the same.

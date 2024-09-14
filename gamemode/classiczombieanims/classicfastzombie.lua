@@ -1,4 +1,11 @@
 function CLASS.CalcMainActivity(ply, velocity)
+	local wep = ply:GetActiveWeapon()
+
+	if not wep:IsValid() or not wep.GetClimbing then return end
+
+	if wep:GetClimbing() then
+		return ACT_CLIMB_UP, -1
+	end
 
 	if velocity:Length2DSqr() <= 1 then
 		return ACT_IDLE, -1
@@ -9,6 +16,16 @@ end
 
 function CLASS.UpdateAnimation(ply, velocity, maxseqgroundspeed)
 	local len2d = velocity:Length2D()
+
+	local wep = ply:GetActiveWeapon()
+
+	if not wep:IsValid() or not wep.GetClimbing then return end
+
+	if wep:GetClimbing() then
+		ply:SetPlaybackRate(2)
+		return
+	end
+
 	if len2d > 1 then
 		ply:SetPlaybackRate( math.min(len2d / 250, 1.5) )
 	else
