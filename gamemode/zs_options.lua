@@ -153,7 +153,8 @@ HELP_TEXT = [[^rWelcome to Zombie Survival, for GMod10.@
 @If you lose enough health, your vision will enhance due to adrenaline.@ 
 @^rRewards for killing zombies:@]]
 ..weapon_table_text..
-[[ @ @^g          -- ZOMBIES --
+[[@ 
+@^g          -- ZOMBIES --
 @You can change your class as a zombie by going in the scoreboard and pressing the "classes" tab.
 @Classes in red mean that more humans need to be killed to get that class unlocked.@ 
 @^rYou lose the match if all humans die or you're a zombie at the end of the round.@ 

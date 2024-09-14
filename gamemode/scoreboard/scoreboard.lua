@@ -82,7 +82,7 @@ function PANEL:Paint()
 		end
 	end
 
-	draw.SimpleText("-nVts-Zombie Survival v1.05 - nvts.online/discord", "noxnetbig", wide * 0.5, tall * 0.01, COLOR_LIMEGREEN, TEXT_ALIGN_CENTER)
+	draw.SimpleText("Zombie Survival v1.05", "noxnetbig", wide * 0.5, tall * 0.01, COLOR_LIMEGREEN, TEXT_ALIGN_CENTER)
 	surface.SetTexture(texGradient)
 	surface.SetDrawColor(255, 255, 255, 50)
 	surface.DrawTexturedRect(0, 0, wide, tall)
