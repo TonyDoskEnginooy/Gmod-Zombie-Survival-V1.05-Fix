@@ -3,6 +3,10 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+function SWEP:SetLeaping(leaping)
+	self:SetDTBool(0, leaping)
+end
+
 SWEP.Weight = 5
 SWEP.AutoSwitchTo = true
 SWEP.AutoSwitchFrom = false
@@ -16,9 +20,9 @@ function SWEP:Deploy()
 end
 
 function SWEP:Think()
-	if self.Leaping then
+	if self:GetLeaping() then
 		if self.Owner:OnGround() then
-			self.Leaping = false
+			self:SetLeaping(false)
 			self.NextLeap = CurTime() + 1
 		else
 			local vStart = self.OwnerOffset + self.Owner:GetPos()
@@ -66,13 +70,13 @@ function SWEP:Think()
 
 					self.Owner:FireBullets(bullet)
 				end
-				self.Leaping = false
+				self:SetLeaping(false)
 		    	self.NextLeap = CurTime() + 1
 				self.Owner:EmitSound("npc/headcrab/headbite.wav")
 				self.Owner:ViewPunch(Angle(math.random(0, 30), math.random(0, 30), math.random(0, 30)))
 			elseif trace.HitWorld then
 				self.Owner:EmitSound("physics/flesh/flesh_strider_impact_bullet1.wav")
-		    	self.Leaping = false
+		    	self:SetLeaping(false)
 		    	self.NextLeap = CurTime() + 1
 			end
 		end
@@ -85,7 +89,7 @@ end
 
 SWEP.NextLeap = 0
 function SWEP:SecondaryAttack()
-	if self.Leaping then return end
+	if self:GetLeaping() then return end
 	self.Owner:Fire("IgnoreFallDamage", "", 0)
 	local onground = self.Owner:OnGround()
 	if CurTime() < self.NextLeap then return end
@@ -100,7 +104,7 @@ function SWEP:SecondaryAttack()
 	self.OwnerOffset = Vector(0,0,4)
 	self.Owner:SetGroundEntity(NULL)
 	self.Owner:SetLocalVelocity(vel)
-	self.Leaping = true
+	self:SetLeaping(true)
 	self.Owner:EmitSound("npc/headcrab/attack"..math.random(1,3)..".wav")
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 end
